@@ -106,9 +106,12 @@ async function main(){
         
         
     }
-
+    function debounce(callback,delay){
+        return (...args)=>{setTimeout(()=>{callback(...args)},delay);}
+    }
+    let delaycall=debounce(searchHandle,500);
     let searchEle=document.querySelector(".search");
-    searchEle.addEventListener("input",searchHandle);
+    searchEle.addEventListener("input",delaycall);
     
 }
 
