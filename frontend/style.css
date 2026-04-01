@@ -28,13 +28,18 @@ body{
     position:fixed;
     background:var(--bg-color);
     width:100vw;
+    z-index:1000;
 }
 .video{
     
     display:flex;
     justify-content:center;
-    padding : 10px;
+    padding: 10px;
+    padding-top:150px;
     
+}
+#player{
+    scroll-margin-top:150px;
 }
 .options{
     display:flex;
