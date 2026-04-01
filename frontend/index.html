@@ -14,12 +14,31 @@
         <h1 class="heading-1">
             Movie app
         </h1>
-        <div class="search-container">
+        <div class="options">
+        
+            <div class="search-container">
             <label for="input"><span class="material-icons-outlined">search</span></label>
             <input class="search" id="input" type="text"  placeholder="Search a Movie | Director | Actor |">
-            
+            </div>
+            <select class="ratings-select">
+                <option class="rating" value="rating">rating</option>
+                <option class="rating" value="7">above 7</option>
+                <option class="rating" value="8">above 8</option>
+                <option class="rating" value="9">above 9</option>
+                <option class="rating" value="10"></option>
+            </select>
+            <select class="genre-select">
+                <option class="genreop" value="genre">Genre</option>
+                <option class="genreop" value="Sci-Fi">Sci-Fi</option>
+                <option class="genreop" value="Action">Action</option>
+                <option class="genreop" value="Drama">Drama</option>
+                <option class="genreop" value="Thriller">Thriller</option>
+                <option class="genreop" value="Romance">Romance</option>
+            </select>
+        
         </div>
     </header>
+    <div class="video"><iframe id="player" width="600" height="400" style="display:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
     <main class="main">
        
     </main>

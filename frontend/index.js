@@ -15,28 +15,30 @@ async function getMovies(url){
 }
 
 async function main(){
+
     let searchvalue;
+    let ratingvalue;
+    let genrevalue;
     let filteredArrayOfMovies=[];
     let movies = await getMovies(API_URL);
     console.log(movies);
     let createElement=(ele)=>document.createElement(ele);
-
+    
+    
+    let main=document.querySelector(".main");
     let search=document.querySelector(".search").value;
     console.log("this is search value:",search);
     
-    
+
     
     for(let movie of movies){
         createCard(movie);
     }
 
-    function searchItem(){
-        let search=document.querySelector(".search").value;
-    console.log("this is search value:",search);
-    }
+    
 
     function createCard(movie){
-        let main=document.querySelector(".main");
+        
         let cardContainer=createElement("div");
     cardContainer.classList.add("card","shadow");
 
@@ -90,16 +92,34 @@ async function main(){
     
     cardContainer.appendChild(detailsEle);
     
+cardContainer.addEventListener('click',()=>{
+        let videoplayer=document.getElementById('player');
+        videoplayer.style.display="block";
+        videoplayer.src=movie.videoUrl;
+        })
+
     main.appendChild(cardContainer);
+    
+
+    
     }
 
     function searchHandle(event){
         searchvalue=event.target.value.toLowerCase();
-        // console.log(event.target.value);
-        filteredArrayOfMovies=searchvalue ? searchvalue.length>0 ? movies.filter(movie=>searchvalue===movie.title.toLowerCase()||searchvalue===movie.director.toLowerCase()):movies:movies;
-        console.log(filteredArrayOfMovies);
-        let main=document.querySelector(".main");
-        main.innerHTML=" ";
+        if(ratingvalue&&ratingvalue.length>0){
+            filteredArrayOfMovies=movies.filter(movie=>movie.rating>=ratingvalue)
+            if(genrevalue&&genrevalue.length>0){
+                filteredArrayOfMovies=filteredArrayOfMovies.filter(movie=>movie.genre===genrevalue);
+        }
+        }
+        else if(genrevalue&&genrevalue.length>0){
+            filteredArrayOfMovies=movies.filter(movie=>movie.genre===genrevalue);
+        }
+        else{
+            filteredArrayOfMovies=movies;
+        }
+        filteredArrayOfMovies=filteredArrayOfMovies.filter(movie=>movie.title.toLowerCase().includes(searchvalue)||movie.director.toLowerCase().includes(searchvalue));
+        main.innerHTML="";
         for(let movie of filteredArrayOfMovies){
             createCard(movie);
         }
@@ -107,11 +127,68 @@ async function main(){
         
     }
     function debounce(callback,delay){
-        return (...args)=>{setTimeout(()=>{callback(...args)},delay);}
+        let timer;
+        return (...args)=>{
+            clearTimeout(timer);
+            timer=setTimeout(()=>{callback(...args)},delay);}
     }
     let delaycall=debounce(searchHandle,500);
     let searchEle=document.querySelector(".search");
     searchEle.addEventListener("input",delaycall);
+
+    function handleratings(event){
+        ratingvalue=event.target.value;
+        if(searchvalue&&searchvalue.length>0){
+            filteredArrayOfMovies=movies.filter(movie=>movie.title.toLowerCase().includes(searchvalue)||movie.director.toLowerCase().includes(searchvalue))
+            if(genrevalue&&genrevalue.length>0){
+                filteredArrayOfMovies=filteredArrayOfMovies.filter(movie=>movie.genre===genrevalue);
+        }
+        }
+        else if(genrevalue&&genrevalue.length>0){
+            filteredArrayOfMovies=movies.filter(movie=>movie.genre===genrevalue);
+        }
+        else{
+            filteredArrayOfMovies=movies;
+        }
+        filteredArrayOfMovies=filteredArrayOfMovies.filter(movie=>movie.rating>=ratingvalue);
+        main.innerHTML="";
+        for(let movie of filteredArrayOfMovies){
+            console.log(movie.title);
+            createCard(movie);
+        }
+    }
+    let ratingsSelect=document.querySelector(".ratings-select");
+    ratingsSelect.addEventListener('change',(e)=>{
+        handleratings(e);
+    });
+
+    function handlegenre(event){
+        genrevalue=event.target.value;
+        if(searchvalue&&searchvalue.length>0){
+            filteredArrayOfMovies=movies.filter(movie=>movie.title.toLowerCase().includes(searchvalue)||movie.director.toLowerCase().includes(searchvalue))
+            if(ratingvalue&&ratingvalue.length>0){
+                filteredArrayOfMovies=filteredArrayOfMovies.filter(movie=>movie.rating>=ratingvalue);
+        }
+        }
+        else if(ratingvalue&&ratingvalue.length>0){
+            filteredArrayOfMovies=movies.filter(movie=>movie.rating>=ratingvalue);
+        }
+        else{
+            filteredArrayOfMovies=movies;
+        }
+        filteredArrayOfMovies=filteredArrayOfMovies.filter(movie=>movie.genre===event.target.value);
+        main.innerHTML="";
+        for(let movie of filteredArrayOfMovies){
+            createCard(movie);
+        }
+
+    }
+
+    let genreselect=document.querySelector(".genre-select");
+    genreselect.addEventListener("change",(e)=>{
+        console.log(e.target.value);
+        handlegenre(e);
+    })
     
 }
 
