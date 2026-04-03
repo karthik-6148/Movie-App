@@ -1,4 +1,4 @@
-const API_URL="http://localhost:3000/movies";
+const API_URL="https://movie-app-ysk5.onrender.com/movies";
 console.log("index.js loaded");
 
 
